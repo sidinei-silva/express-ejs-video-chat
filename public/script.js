@@ -26,6 +26,10 @@ function configureVideo() {
 
     myPeer.on('call', call => {
       call.answer(stream)
+      const hostVideo = document.createElement('video')
+      call.on('stream', userVideoStream => {
+        addVideoStream(hostVideo, userVideoStream)
+      })
     })
 
     socket.on('user-connected', userId => {
