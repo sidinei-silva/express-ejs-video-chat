@@ -1,9 +1,13 @@
 {
   "name": "group-video-chat",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "author": "Sidinei Silva <sidinei.silva02@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
   "dependencies": {
     "ejs": "^3.1.5",
     "expres": "^0.0.5",
