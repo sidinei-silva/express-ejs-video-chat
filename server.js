@@ -21,5 +21,11 @@ app.get('/:room', (request, response )=> {
   response.render('room', {roomId: request.params.room})
 })
 
+io.on('connection', socket => {
+  socket.on('join-room', (roomId, userId) => {
+    console.log(roomId, userId)
+  })
+})
+
 const PORT = process.env.PORT || 5000
 server.listen(PORT, () => {console.log(`Listening in port: ${PORT}`)})
