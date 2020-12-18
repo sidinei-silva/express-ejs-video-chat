@@ -4,6 +4,8 @@ const videoGridElement = document.getElementById('video-grid')
 const myVideoElement = document.createElement('video')
 myVideoElement.muted= true
 
+const peers = {}
+
 const myPeer = new Peer(undefined, {
   secure: true, 
   host: 'sidinei-peerjs-server.herokuapp.com', 
@@ -59,4 +61,6 @@ function connectToNewUser(userId, stream) {
   call.on('close', () => {
     videoElement.remove()
   })
+
+  peers[userId] = call
 }
