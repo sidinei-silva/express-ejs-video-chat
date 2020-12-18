@@ -23,7 +23,7 @@ app.get('/:room', (request, response )=> {
 
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
-    console.log(roomId, userId)
+    socket.join(roomId)
   })
 })
 
