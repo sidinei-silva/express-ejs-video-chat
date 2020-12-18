@@ -24,7 +24,9 @@ function configureVideo() {
   }).then(stream => {
     addVideoStream(myVideoElement, stream)
 
-
+    myPeer.on('call', call => {
+      call.answer(stream)
+    })
 
     socket.on('user-connected', userId => {
       connectToNewUser(userId, stream)
