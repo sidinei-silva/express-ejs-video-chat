@@ -18,21 +18,29 @@ navigator.mediaDevices.getUserMedia({
 }).then(stream => {
   addVideoStream(myVideoElement, stream)
 
+  //Enviando meu video para visitante
+  //myPeer = peer de quem vai receber o video
   myPeer.on('call', call => {
     call.answer(stream)
     const hostVideo = document.createElement('video')
+    peers[call.peer] = call
+    hostVideo.id = call.peer
     call.on('stream', userVideoStream => {
       addVideoStream(hostVideo, userVideoStream)
     })
   })
 
-  socket.on('user-connected', userId => {
+  //Conectando com visitante
+  socket.on('user-connected', async userId => {
     connectToNewUser(userId, stream)
   })
 })
 
-socket.on('user-disconnected', userId => {
-  if(peers[userId]) peers[userId].close()
+socket.on('user-disconnected', async userId => {
+  if(peers[userId]){
+    peers[userId].close()
+    document.getElementById(userId).remove()
+  } 
 })
 
 myPeer.on('open', id => { 
@@ -49,13 +57,12 @@ function addVideoStream(videoElement, stream) {
 
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
-  const videoElement = document.createElement('video')
+  //Incluindo video do visitante no host
+  // userId = id visitante
+  const newUserVideoElement = document.createElement('video')
+  newUserVideoElement.id = userId
   call.on('stream', userVideoStream => {
-    addVideoStream(videoElement, userVideoStream)
+    addVideoStream(newUserVideoElement, userVideoStream)
   })
-  call.on('close', () => {
-    videoElement.remove()
-  })
-
   peers[userId] = call
 }
