@@ -15,7 +15,7 @@ const myPeer = new Peer(undefined, {
 configureVideo();
 
 socket.on('user-disconnected', userId => {
-  console.log(userId)
+  if(peers[userId]) peers[userId].close()
 })
 
 myPeer.on('open', id => { 
