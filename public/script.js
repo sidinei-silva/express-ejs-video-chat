@@ -12,7 +12,24 @@ const myPeer = new Peer(undefined, {
   port: 443,
 })
 
-configureVideo();
+navigator.mediaDevices.getUserMedia({
+  video: true,
+  audio: true
+}).then(stream => {
+  addVideoStream(myVideoElement, stream)
+
+  myPeer.on('call', call => {
+    call.answer(stream)
+    const hostVideo = document.createElement('video')
+    call.on('stream', userVideoStream => {
+      addVideoStream(hostVideo, userVideoStream)
+    })
+  })
+
+  socket.on('user-connected', userId => {
+    connectToNewUser(userId, stream)
+  })
+})
 
 socket.on('user-disconnected', userId => {
   if(peers[userId]) peers[userId].close()
@@ -21,28 +38,6 @@ socket.on('user-disconnected', userId => {
 myPeer.on('open', id => { 
   socket.emit('join-room', ROOM_ID, id)
 })
-
-
-function configureVideo() {
-  navigator.mediaDevices.getUserMedia({
-    video: true,
-    audio: true
-  }).then(stream => {
-    addVideoStream(myVideoElement, stream)
-
-    myPeer.on('call', call => {
-      call.answer(stream)
-      const hostVideo = document.createElement('video')
-      call.on('stream', userVideoStream => {
-        addVideoStream(hostVideo, userVideoStream)
-      })
-    })
-
-    socket.on('user-connected', userId => {
-      connectToNewUser(userId, stream)
-    })
-  })
-}
 
 function addVideoStream(videoElement, stream) {
   videoElement.srcObject = stream
