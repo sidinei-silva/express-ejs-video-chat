@@ -49,8 +49,6 @@ navigator.mediaDevices
     // Renderiza video do host
     addVideoStream(myVideoElement, stream);
 
-    console.log('Antes do on evento de call')
-
     /**
      * @param {*} call: call do host
      * @description: Ouve chamada que visitante faz
@@ -80,8 +78,6 @@ navigator.mediaDevices
         addVideoStream(hostVideo, userVideoStream);
       });
     });
-
-    console.log('Depois do on evento de call')
 
     /**
      * @description: Ouvindo evento de visitante conectado
@@ -134,7 +130,7 @@ function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream);
   console.log(new Date().toLocaleTimeString()+ '- Visitante chamado', {
     idVisitante: userId,
-    meuStrema: stream,
+    meuStream: stream,
     callRetornado: call
   })
   // Cria video source do visitante
