@@ -106,16 +106,15 @@ function addVideoStream(videoElement, stream) {
   })
 
   // Ouve evento de conteúdo carregado e dar play
-  videoElement.addEventListener("loadedmetadata", () => {
-    videoElement.play();
+  videoElement.addEventListener("loadedmetadata", async () => {
+    await videoElement.play();
     console.log(new Date().toLocaleTimeString()+ '- Elemento feito play')
+    // Insere elemento dentro da grid
+    videoGridElement.append(videoElement);
+    console.log(new Date().toLocaleTimeString()+ '- Incluindo elemento em grid', {
+      grid: videoGridElement
+    })
   });
-
-  // Insere elemento dentro da grid
-  videoGridElement.append(videoElement);
-  console.log(new Date().toLocaleTimeString()+ '- Incluindo elemento em grid', {
-    grid: videoGridElement
-  })
 }
 
 /**
