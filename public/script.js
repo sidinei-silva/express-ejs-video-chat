@@ -63,6 +63,7 @@ navigator.mediaDevices
      * @event myPeer: Peer de quem recebe a chamada
      */
     myPeer.on("call", (call) => {
+      console.log('Executando evento de on call')
       // Responde chamada do vistante passando stream do host
       call.answer(stream);
       console.log(new Date().toLocaleTimeString()+ '- Atendendo call de visitante', {
