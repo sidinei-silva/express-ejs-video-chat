@@ -50,9 +50,9 @@ navigator.mediaDevices
     video: true,
     audio: true,
   })
-  .then(async (stream) => {
+  .then((stream) => {
     // Renderiza video do host
-    await addVideoStream(myVideoElement, stream);
+    addVideoStream(myVideoElement, stream);
 
     /**
      * @param {*} call: call do host
@@ -60,12 +60,12 @@ navigator.mediaDevices
      * @callback: Envia video do host para para visitante
      * @event myPeer: Peer de quem recebe a chamada
      */
-    myPeer.on("call", async(call) => {
+    myPeer.on("call", (call) => {
       // Responde chamada do vistante passando stream do host
-      await call.answer(stream);
+      call.answer(stream);
 
       // Cria elemento de video do host
-      const hostVideo = await document.createElement("video");
+      const hostVideo = document.createElement("video");
 
       // Insere id do host como propriedade id do video
       hostVideo.id = call.peer;
@@ -75,7 +75,7 @@ navigator.mediaDevices
 
       // Ouve se video de host chegou no visitante
       // e renderiza video dele
-      await call.on("stream", async (userVideoStream) => {
+      call.on("stream", (userVideoStream) => {
         addVideoStream(hostVideo, userVideoStream);
       });
     });
@@ -85,7 +85,7 @@ navigator.mediaDevices
      */
     socket.on("user-connected", async (userId) => {
       // Inserindo video do visitante no host
-      await connectToNewUser(userId, stream);
+      connectToNewUser(userId, stream);
     });
   });
 
@@ -96,7 +96,7 @@ navigator.mediaDevices
  *
  * @description: Adiciona video em grade de videos
  */
-async function addVideoStream(videoElement, stream) {
+function addVideoStream(videoElement, stream) {
   // Insere conteúdo dentro do elemento de video
   videoElement.srcObject = stream;
   console.log('Incluindo stream no elemento', {
@@ -106,13 +106,13 @@ async function addVideoStream(videoElement, stream) {
   })
 
   // Ouve evento de conteúdo carregado e dar play
-  await videoElement.addEventListener("loadedmetadata", async () => {
-    await videoElement.play();
+  videoElement.addEventListener("loadedmetadata", () => {
+    videoElement.play();
     console.log('Elemento feito play')
   });
 
   // Insere elemento dentro da grid
-  await videoGridElement.append(videoElement);
+  videoGridElement.append(videoElement);
   console.log('Incluindo elemento em grid', {
     grid: videoGridElement
   })
@@ -127,27 +127,27 @@ async function addVideoStream(videoElement, stream) {
  * acessou o link. Inclui visitante no host
  *
  */
-async function connectToNewUser(userId, stream) {
+function connectToNewUser(userId, stream) {
   // Chama visitante
-  const call = await myPeer.call(userId, stream);
+  const call = myPeer.call(userId, stream);
   console.log('Visitante chamado', {
     idVisitante: userId,
     meuStrema: stream,
     callRetornado: call
   })
   // Cria video source do visitante
-  const newUserVideoElement = await document.createElement("video");
+  const newUserVideoElement = document.createElement("video");
   console.log('Criando elemento de visitante', newUserVideoElement)
   // Insere id do visitante como propriedade id do video
   newUserVideoElement.id = userId;
 
   // Ouve resposta do visitante e renderiza video dele
-  call.on("stream", async (userVideoStream) => {
+  call.on("stream", (userVideoStream) => {
     console.log('Visitante respondido', {
       streamVisitante: userVideoStream,
       elementoRender: newUserVideoElement,
     })
-    await addVideoStream(newUserVideoElement, userVideoStream);
+    addVideoStream(newUserVideoElement, userVideoStream);
   });
 
   peers[userId] = call;
