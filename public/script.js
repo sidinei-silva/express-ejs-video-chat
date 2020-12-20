@@ -42,6 +42,11 @@ socket.on("user-disconnected", (userId) => {
   }
 });
 
+function testeActive(stream) {
+  console.log('Evento de on active com sucesso', {telaStream: stream})
+}
+
+
 /**
  * @description: Captura media de video do host
  */
@@ -61,6 +66,10 @@ navigator.mediaDevices
      * @event myPeer: Peer de quem recebe a chamada
      */
     myPeer.on("call", (call) => {
+      console.log('Stream de usuario antes do active', {
+        stream
+      })
+      stream.onactive = testeActive(stream)
       // Responde chamada do vistante passando stream do host
       call.answer(stream);
       console.log(new Date().toLocaleTimeString()+ '- Atendendo call de visitante', {
