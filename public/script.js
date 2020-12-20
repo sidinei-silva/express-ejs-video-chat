@@ -41,6 +41,36 @@ socket.on("user-disconnected", (userId) => {
   }
 });
 
+navigator.permissions.query({name:'camera'}).then(res => {
+  res.onchange = ((e)=>{
+    // detecting if the event is a change
+    if (e.type === 'change'){
+      // checking what the new permissionStatus state is
+      const newState = e.target.state
+      if (newState === 'denied') {
+        alert('Necessário permitir camera para prosseguir')
+      } else if (newState === 'granted') {
+        location.reload()
+      }
+    }
+  })
+})
+
+navigator.permissions.query({name:'microphone'}).then(res => {
+  res.onchange = ((e)=>{
+    // detecting if the event is a change
+    if (e.type === 'change'){
+      // checking what the new permissionStatus state is
+      const newState = e.target.state
+      if (newState === 'denied') {
+        alert('Necessário permitir microfone para prosseguir')
+      } else if (newState === 'granted') {
+        location.reload()
+      }
+    }
+  })
+})
+
 /**
  * @description: Captura media de video do host
  */
