@@ -99,14 +99,23 @@ navigator.mediaDevices
 function addVideoStream(videoElement, stream) {
   // Insere conteúdo dentro do elemento de video
   videoElement.srcObject = stream;
+  console.log('Incluindo stream no elemento', {
+    streamVisitanteL: stream,
+    objetoDeVideo: videoElement.srcObject,
+    elemento: videoElement
+  })
 
   // Ouve evento de conteúdo carregado e dar play
   videoElement.addEventListener("loadedmetadata", () => {
     videoElement.play();
+    console.log('Elemento feito play')
   });
 
   // Insere elemento dentro da grid
   videoGridElement.append(videoElement);
+  console.log('Incluindo elemento em grid', {
+    grid: videoGridElement
+  })
 }
 
 /**
@@ -121,15 +130,23 @@ function addVideoStream(videoElement, stream) {
 function connectToNewUser(userId, stream) {
   // Chama visitante
   const call = myPeer.call(userId, stream);
-
+  console.log('Visitante chamado', {
+    idVisitante: userId,
+    meuStrema: stream,
+    callRetornado: call
+  })
   // Cria video source do visitante
   const newUserVideoElement = document.createElement("video");
-
+  console.log('Criando elemento de visitante', newUserVideoElement)
   // Insere id do visitante como propriedade id do video
   newUserVideoElement.id = userId;
 
   // Ouve resposta do visitante e renderiza video dele
   call.on("stream", (userVideoStream) => {
+    console.log('Visitante respondido', {
+      streamVisitante: userVideoStream,
+      elementoRender: newUserVideoElement,
+    })
     addVideoStream(newUserVideoElement, userVideoStream);
   });
 
