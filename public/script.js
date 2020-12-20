@@ -125,14 +125,16 @@ function addVideoStream(videoElement, stream) {
  * acessou o link. Inclui visitante no host
  *
  */
-function connectToNewUser(userId, stream) {
+async function connectToNewUser(userId, stream) {
   // Chama visitante
-  const call = myPeer.call(userId, stream);
-  console.log(new Date().toLocaleTimeString()+ '- Visitante chamado', {
+  console.log(new Date().toLocaleTimeString()+ '- Chamando visitante', {
     idVisitante: userId,
     meuStream: stream,
-    callRetornado: call
   })
+  const call = myPeer.call(userId, stream);
+
+  console.log('Call feito', {call})
+  
   // Cria video source do visitante
   const newUserVideoElement = document.createElement("video");
   console.log(new Date().toLocaleTimeString()+ '- Criando elemento de visitante', newUserVideoElement)
