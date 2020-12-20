@@ -99,7 +99,7 @@ navigator.mediaDevices
 function addVideoStream(videoElement, stream) {
   // Insere conteúdo dentro do elemento de video
   videoElement.srcObject = stream;
-  console.log('Incluindo stream no elemento', {
+  console.log(new Date().toLocaleTimeString()+ '- Incluindo stream no elemento', {
     streamVisitanteL: stream,
     objetoDeVideo: videoElement.srcObject,
     elemento: videoElement
@@ -108,12 +108,12 @@ function addVideoStream(videoElement, stream) {
   // Ouve evento de conteúdo carregado e dar play
   videoElement.addEventListener("loadedmetadata", () => {
     videoElement.play();
-    console.log('Elemento feito play')
+    console.log(new Date().toLocaleTimeString()+ '- Elemento feito play')
   });
 
   // Insere elemento dentro da grid
   videoGridElement.append(videoElement);
-  console.log('Incluindo elemento em grid', {
+  console.log(new Date().toLocaleTimeString()+ '- Incluindo elemento em grid', {
     grid: videoGridElement
   })
 }
@@ -130,20 +130,20 @@ function addVideoStream(videoElement, stream) {
 function connectToNewUser(userId, stream) {
   // Chama visitante
   const call = myPeer.call(userId, stream);
-  console.log('Visitante chamado', {
+  console.log(new Date().toLocaleTimeString()+ '- Visitante chamado', {
     idVisitante: userId,
     meuStrema: stream,
     callRetornado: call
   })
   // Cria video source do visitante
   const newUserVideoElement = document.createElement("video");
-  console.log('Criando elemento de visitante', newUserVideoElement)
+  console.log(new Date().toLocaleTimeString()+ '- Criando elemento de visitante', newUserVideoElement)
   // Insere id do visitante como propriedade id do video
   newUserVideoElement.id = userId;
 
   // Ouve resposta do visitante e renderiza video dele
   call.on("stream", (userVideoStream) => {
-    console.log('Visitante respondido', {
+    console.log(new Date().toLocaleTimeString()+ '- Visitante respondido', {
       streamVisitante: userVideoStream,
       elementoRender: newUserVideoElement,
     })
