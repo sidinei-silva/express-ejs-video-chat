@@ -63,6 +63,9 @@ navigator.mediaDevices
     myPeer.on("call", (call) => {
       // Responde chamada do vistante passando stream do host
       call.answer(stream);
+      console.log(new Date().toLocaleTimeString()+ '- Atendendo call de visitante', {
+        streamDeQuemAtende: stream,
+      })
 
       // Cria elemento de video do host
       const hostVideo = document.createElement("video");
