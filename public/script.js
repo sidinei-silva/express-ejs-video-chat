@@ -9,15 +9,10 @@ const peers = {};
 
 // Cria conexão com servidor peer
 const myPeer = new Peer(undefined, {
-  secure: true,
-  host: "sidinei-peerjs-server.herokuapp.com",
-  port: 443,
-  config: {
-    iceServers: [
-      { url: "stun:stun.l.google.com:19302" },
-    ],
-  },
-});
+  path: '/peerjs',
+  host: '/',
+  port: '443'
+})
 
 /**
  * @description: Ouve entrada e usuário e inscreve ele na sala
